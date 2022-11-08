@@ -3,32 +3,54 @@
    padding: 0;
    box-sizing: border-box;
 }
-
+button {
+   color: red;
+}
 /* CaseCard-classes */
-.Case {
+.Issue {
    box-shadow: 5px 5px 5px rgb(230, 230, 230);
    border-radius: 10px;
 }
-.Case-Link {
+.Issue-Link {
    text-decoration: none;
    color: #000;
 }
-.Case .card-body {
+.Issue .card-body {
    outline: transparent;
    border: transparent;
 }
-.Case .card-body:hover {
+.Issue .card-body:hover {
    border-radius: 6px;
    outline: 2px solid rgb(146, 145, 145);
    transition: 150ms ease-in-out;
    color: rgb(45, 45, 45);
 }
-.Case .card-body:active {
+.Issue .card-body:active {
   outline: 2px solid #000;
 }
-.Single-Case textarea {
+.Single-Issue textarea {
    resize: none;
    font-size: .9rem;
    min-height: 100px;
 }
 /* CaseCard-classes */
+
+/*Errors*/
+.errorMessage {
+   visibility: visible;
+   position: absolute;
+   margin-left: 3px;
+   color: red;
+   margin-top: 3px;
+   font-weight: 300;
+}
+.form-control {
+   border: none;
+   outline: 1px solid rgb(213, 213, 213);
+}
+.form-control:focus {
+   outline: none;
+   border: none;
+   outline: 2px solid rgb(115, 114, 114);
+   box-shadow: none;
+}

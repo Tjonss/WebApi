@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Create from '../components/Create'
-import Login from '../components/Login'
-import CasesContainer from '../components/CasesContainer'
-import SingleCase from '../components/SingleCase'
+import Register from '../components/Register'
+import SingleIssue from '../components/SingleIssue'
+import IssuesContainer from '../components/IssuesContainer'
 
 
 const Views = () => {
@@ -11,9 +11,9 @@ const Views = () => {
     <>
       <Routes>
         <Route path='/create' element={<Create />} />
-        <Route path='/cases' element={<CasesContainer />} />
-        <Route path='/cases/:id' element={<SingleCase />} />
-        <Route path='/login' element={<Login />}/>
+        <Route path='/issues' element={<IssuesContainer />} />
+        <Route path='/issues/:id' element={<SingleIssue />} />
+        <Route path='/register' element={<Register />}/>
       </Routes>
 
     </>

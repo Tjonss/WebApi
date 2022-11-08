@@ -15,10 +15,10 @@ const Navbar = () => {
         <div className='collapse navbar-collapse' id='navbarNav'>
           <ul className='navbar-nav'>
             <li className='nav-item'>
-              <Link to='/cases' className='nav-link active' aria-current='page'>Cases</Link>
+              <Link to='/issues' className='nav-link active' aria-current='page'>Issues</Link>
             </li>
             <li className='nav-item'>
-              <Link to='/login' className='nav-link' >Login</Link>
+              <Link to='/register' className='nav-link' >Register</Link>
             </li>
             { isAuth && (
 

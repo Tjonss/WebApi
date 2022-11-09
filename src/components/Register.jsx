@@ -1,18 +1,43 @@
-import React from 'react'
+import axios from 'axios';
+import { useState, useEffect } from 'react'
 import { useForm }  from 'react-hook-form'
-// import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [issue, setIssue] = useState({})
+
+  const [registered, setRegistered] = useState(false)
+
+  const navigate = useNavigate();
 
   const registerUser = async (formData) => {
-   
+    setLoading(true)
+    try {
+      const res = await axios.post('https://localhost:7179/api/users', formData)
+      setIssue(res.data)
+      console.log(res.data)
+      setLoading(false)
+      setError(null)
+    } catch (err) {
+      setError(err.message)
+      setLoading(false)
+    }
   }
-
+  
+  useEffect(() => {
+    if(registered)
+      navigate('/create')
+  }, [navigate, registered])
+  
+  
   const onSubmit = (formData) => {
     registerUser(formData)
+    setRegistered(true)
   }
 
   return (
@@ -29,7 +54,6 @@ const Register = () => {
             {...register('firstName', {required: 'You need to enter your firstname.'})}
           />
           {errors.firstName && <small className='errorMessage'>{errors.firstName.message}</small>}
-
         </div>
         <div className='mb-4'>
           <label htmlFor='lastName' className='form-label'>Lastname:</label>
@@ -37,9 +61,9 @@ const Register = () => {
             id='lastName' 
             type='text' 
             className='form-control'
-            {...register('lastName', {required: 'You need to enter your lastname.'})}  />
-            {errors.lastName && <small className='errorMessage'>{errors.lastName.message}</small>}
-
+            { ...register('lastName', {required: 'You need to enter your lastname.'}) }
+          />
+          { errors.lastName && <small className='errorMessage'>{errors.lastName.message}</small> }
         </div>
         <div className='mb-4'>
           <label htmlFor='email' className='form-label'>Email:</label>
@@ -51,23 +75,14 @@ const Register = () => {
           />
           {errors.email && <small className='errorMessage'>{errors.email.message}</small>}
         </div>
-        <div className='mb-4'>
-          <label htmlFor='password' className='form-label'>Password</label>
-          <input 
-            id='password' 
-            type='password' 
-            className='form-control'
-            {...register('password', {required: 'You need to enter a password.', minLength: {value: 4, message: 'Your password must be atleast 7 characters long.'} })}
-            />
-          {errors.password && <small className='errorMessage'>{errors.password.message}</small>}
-        </div>
         <div className='mb-5'>
-          <label htmlFor='phonenumber' className='form-label'>Phone-number:</label>
+          <label htmlFor='phoneNumber' className='form-label'>Phone-number:</label>
           <input 
-            id='phonenumber' 
+            id='phoneNumber' 
             type='text' 
             placeholder='Optional...' 
             className='form-control' 
+            {...register('phoneNumber')}
             />
         </div>
         <button type='submit' className='btn btn-primary w-50 d-block mx-auto'>Register</button>

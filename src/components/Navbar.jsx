@@ -1,10 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
-
-  const [isAuth, setIsAuth] = useState(true)
-
 
   return (
     <nav className='navbar navbar-expand-md navbar-light bg-light'>
@@ -13,27 +9,16 @@ const Navbar = () => {
           <span className='navbar-toggler-icon'></span>
         </button>
         <div className='collapse navbar-collapse' id='navbarNav'>
-          <ul className='navbar-nav'>
+          <ul className='navbar-nav  d-flex justify-content-between'>
             <li className='nav-item'>
-              <Link to='/issues' className='nav-link active' aria-current='page'>Issues</Link>
+              <Link to='/' className='nav-link'>Register</Link>
             </li>
             <li className='nav-item'>
-              <Link to='/register' className='nav-link' >Register</Link>
+              <Link to='/create' className='nav-link'>Create</Link>
             </li>
-            { isAuth && (
-
-              <li className='nav-item'>
-                <Link to='/create' className='nav-link'>Create</Link>
-              </li>
-              )}
-
-            { isAuth && (
-
             <li className='nav-item'>
-              <a className='nav-link' >Logout</a>
+              <Link to='/issues' className='nav-link' aria-current='page'>Issues</Link>
             </li>
-            )}
-           
           </ul>
         </div>
       </div>

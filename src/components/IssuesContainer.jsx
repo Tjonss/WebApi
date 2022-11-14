@@ -25,11 +25,9 @@ const IssuesContainer = () => {
       fetchIssues()
   },[])
 
-  
   const issuesTemplate = ( issues && 
     issues.map(issue => <IssueCard key={issue.id} issue={issue}/>)
   )
-
 
   return (
     <div className='container'>

@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const Create = () => {
@@ -16,7 +16,12 @@ const Create = () => {
   const onSubmit = (formData) => {
     newIssue(formData)
   }
-    
+
+  useEffect(() => {
+    getUsers()
+  }, [])
+
+
   const newIssue = async (formData) => {
     setLoading(true)
     try {
@@ -28,10 +33,6 @@ const Create = () => {
     }
   }
 
-  useEffect(() => {
-    getUsers()
-  }, [])
-
   const getUsers = async () => {
     try {
       const res = await axios.get('https://localhost:7179/api/users')
@@ -42,10 +43,12 @@ const Create = () => {
     }
   }
 
+  
+
 
   return (
     <>
-    <h2 className='text-center mt-3 Create'>Create new Issue</h2>
+      <h2 className='text-center mt-3 Create'>Create new issue</h2>
       <form onSubmit={handleSubmit(onSubmit)} className='container mt-5'>
         <select 
           className='form-select mb-3' 

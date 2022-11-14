@@ -1,84 +1,113 @@
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import {useForm} from 'react-hook-form'
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import CommentForm from './CommentForm';
 
 const SingleIssue = () => {
 
-  const {register, handleSubmit} = useForm()
-
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [issue, setIssue] = useState({})
   
   const { id } = useParams();
-  const { comments } = issue
-  
-  const getIssue = async () => {
-    setLoading(true)
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [issue, setIssue] = useState();
+  const [status, setStatus] = useState([]);
+  const [created, setCreated] = useState();
+
+
+  const getIssue = async (_id) => {
+    setLoading(true);
     try {
-      const res = await axios.get('https://localhost:7179/api/issues/' + id)
-      setIssue(res.data)
-      console.log(res.data)
-      setLoading(false)
-      setError(null)
+      const res = await axios.get('https://localhost:7179/api/issues/' + _id);
+      setIssue(res.data);
+      // console.log(res.data)
+      setLoading(false);
+      setError(null);
+      setCreated(new Date(res.data.created));
     } catch (err) {
-      setError(err.message)
-      setLoading(false)
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const getStatus = async () => {
+    try {
+      const res = await axios.get('https://localhost:7179/api/statuses');
+      setStatus(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getIssue(id);
+    getStatus();
+  }, [id]);
+
+  const handleChange = async e => {
+    try {
+      const res = await axios.put('https://localhost:7179/api/issues/' + id, {
+        statusId: e.target.value
+      })
+      setIssue((state) => ({...state, statusId: res.data}))
+      getIssue(id)
+      console.log(res.data)
+      // setIssue(state => ({...state, status: res.data}))
+    } catch (err) {
+      console.log(err.message)
+      
     }
   }
 
-  useEffect(() => {
-    getIssue()
-  },[])
+  
 
-  const onSubmit = (formData) => {
-    console.log(formData)
-  }
-
-
-  return ( <>
-    { loading && <div className='text-center'>Loading issues...</div>}
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='Single-Issue container mt-5'>
-        <div className='card mb-3 pb-2'>
-          <div className='card-header d-flex justify-content-between align-items-center'>
-            <small className='fs-5'>{issue.title}</small>
-            <div className='form-floating'>
-              <select 
-                className='form-select mb-3' 
-                id='select'
-                placeholder='Select a customer..'
-                {...register('status')}>
-              </select>
-              <label htmlFor='select'>Status</label>
+  return (
+    <>
+      <p className='container mt-3 noarrow'>
+        <Link to='/issues'>Back to issues</Link>
+      </p>
+      {issue && (
+        <div className='container' >
+          <div className='Single-Issue mt-3'>
+            <div className='card mb-3 pb-2'>
+              <div className='card-header d-flex justify-content-between align-items-center'>
+                <small className='fs-5'>{issue.title}</small>
+                <div className='form-floating'>
+                  <select
+                    className='form-select mb-3'
+                    id='select'
+                    placeholder='Select a customer..'
+                    value={issue.status.id}
+                    onChange={handleChange}
+                  >
+                  { status 
+                  ? (
+                    status.map(stat => 
+                      <option value={stat.id} key={stat.id}>
+                        {stat.status}
+                      </option>
+                    )) 
+                  : <option>-</option> }
+                  </select>
+                </div>
+              </div>
+              <div className='fw-lighter container text-center my-2 mb-0 d-flex justify-content-between'>
+                {issue && (
+                  <small>{created.toLocaleString().slice(0, 16)}</small>
+                )}
+                <small>{issue.email}</small>
+              </div>
+              <div className='card-body py-2'>
+                <p className='card-text'>{issue.description}</p>
+              </div>
             </div>
           </div>
-          <div className='fw-lighter container text-center my-2 mb-0 d-flex justify-content-between'>
-            <small className='fst-italic'>
-            {Date().toLocaleString(issue.created).slice(0,16)}
-            </small>
-            <small>{issue.email}</small>
-          </div>
-          <div className='card-body py-2'>
-            <p className='card-text'>{issue.description}</p>
-          </div>
+          <CommentForm issue={issue} setIssue={setIssue} getIssue={getIssue}/>
         </div>
-        <div className='Comments'>
-            <div className='w-100 mb-2'>
-              <textarea className='form-control' placeholder='Leave a comment here...' {...register('comment')}></textarea>
-            </div>
-            <div className='d-flex justify-content-start'>
-              <button type='submit' className='btn btn-primary d-block w-100'>Save</button>
-            </div>
-        </div>
-        <h5 className='mt-3 text-decoration-underline'>Comments:</h5>
-        <ul>
-        { comments && comments.map(comment => <li key={comment.id}>{comment.comment}</li>)}
-        </ul>
-      </div>
-    </form>  </>
-  )
-}
+      )}
+    </>
+  );
+};
 
-export default SingleIssue 
+export default SingleIssue;

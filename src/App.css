@@ -10,6 +10,27 @@ button {
 .Issue {
    box-shadow: 5px 5px 5px rgb(230, 230, 230);
    border-radius: 10px;
+   position: relative;
+}
+.Comments textarea {
+   resize: none;
+   min-height: 100px;
+}
+.Status {
+   position: absolute;
+   bottom: 2px;
+   right: 10px;
+   font-weight: bold;
+   color: rgb(96, 89, 89);
+}
+.noarrow a {
+   text-decoration: none;
+   color: rgb(104, 102, 102);
+   font-weight: bold;
+}
+.noarrow a:hover {
+   color: #000;
+   text-decoration: underline;
 }
 .Issue-Link {
    text-decoration: none;
@@ -35,7 +56,6 @@ button {
 }
 /* CaseCard-classes */
 
-/*Errors*/
 .errorMessage {
    visibility: visible;
    position: absolute;

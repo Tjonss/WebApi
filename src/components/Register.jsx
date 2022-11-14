@@ -9,18 +9,18 @@ const Register = () => {
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [issue, setIssue] = useState({})
+  const [user, setUser] = useState({})
 
   const [registered, setRegistered] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
 
   const registerUser = async (formData) => {
     setLoading(true)
     try {
       const res = await axios.post('https://localhost:7179/api/users', formData)
-      setIssue(res.data)
-      console.log(res.data)
+      setUser(res.data)
       setLoading(false)
       setError(null)
     } catch (err) {
@@ -28,12 +28,13 @@ const Register = () => {
       setLoading(false)
     }
   }
-  
+
   useEffect(() => {
-    if(registered)
+    setTimeout(() => {
+      if(registered)
       navigate('/create')
-  }, [navigate, registered])
-  
+    }, 2000);
+  }, [registered])
   
   const onSubmit = (formData) => {
     registerUser(formData)
@@ -43,6 +44,7 @@ const Register = () => {
   return (
     <>
       <h2 className='text-center mt-3 Create'>Register</h2>
+       {!registered && (
       <form onSubmit={handleSubmit(onSubmit)} className='container mt-4'>
         <div className='mb-4'>
           <label htmlFor='firstName' className='form-label'>Firstname:</label>
@@ -87,6 +89,8 @@ const Register = () => {
         </div>
         <button type='submit' className='btn btn-primary w-50 d-block mx-auto'>Register</button>
       </form>
+    )}
+      { registered && <div className='d-flex justify-content-center align-items-center mt-5'>You are now registered.</div> }
     </>
   )
 }

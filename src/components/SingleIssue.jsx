@@ -21,7 +21,6 @@ const SingleIssue = () => {
     try {
       const res = await axios.get('https://localhost:7179/api/issues/' + _id);
       setIssue(res.data);
-      // console.log(res.data)
       setLoading(false);
       setError(null);
       setCreated(new Date(res.data.created));
@@ -52,15 +51,10 @@ const SingleIssue = () => {
       })
       setIssue((state) => ({...state, statusId: res.data}))
       getIssue(id)
-      console.log(res.data)
-      // setIssue(state => ({...state, status: res.data}))
     } catch (err) {
       console.log(err.message)
-      
     }
   }
-
-  
 
   return (
     <>
@@ -71,11 +65,11 @@ const SingleIssue = () => {
         <div className='container' >
           <div className='Single-Issue mt-3'>
             <div className='card mb-3 pb-2'>
-              <div className='card-header d-flex justify-content-between align-items-center'>
+              <div className='card-header py-0 d-flex justify-content-between align-items-center'>
                 <small className='fs-5'>{issue.title}</small>
                 <div className='form-floating'>
                   <select
-                    className='form-select mb-3'
+                    className='form-select m-1 py-0'
                     id='select'
                     placeholder='Select a customer..'
                     value={issue.status.id}

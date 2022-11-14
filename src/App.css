@@ -64,6 +64,15 @@ button {
    margin-top: 3px;
    font-weight: 300;
 }
+.selectErrorMessage {
+   position: absolute;
+   visibility: visible;
+   position: absolute;
+   margin-left: 3px;
+   color: red;
+   font-weight: 300;
+   bottom: -25px;
+}
 .form-control {
    border: none;
    outline: 1px solid rgb(213, 213, 213);

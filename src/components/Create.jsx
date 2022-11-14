@@ -1,27 +1,18 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
+// import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Create = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm()
+  // const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [createIssue, setCreateIssue] = useState({})
-
-  const [users, setUsers] = useState()
-
-
-  const onSubmit = (formData) => {
-    newIssue(formData)
-  }
-
-  useEffect(() => {
-    getUsers()
-  }, [])
-
-
+  const [users, setUsers] = useState([])
+  
   const newIssue = async (formData) => {
     setLoading(true)
     try {
@@ -43,21 +34,36 @@ const Create = () => {
     }
   }
 
-  
+  const onSubmit = (formData) => {
+      newIssue(formData)
+      // navigate('/issues')
+    }
 
+    useEffect(() => {
+      getUsers()
+    }, [])
 
   return (
     <>
       <h2 className='text-center mt-3 Create'>Create new issue</h2>
       <form onSubmit={handleSubmit(onSubmit)} className='container mt-5'>
-        <select 
-          className='form-select mb-3' 
-          id='select'
-          placeholder='Select a customer..'
-          {...register('userId', {required: 'You need to enter a user.'})}>
-          { users && users.map(user => <option value={user.id} key={user.id}>{user.firstName} {user.lastName}</option>)}
-        </select>
-        {errors.userId && <small className='errorMessage'>{errors.userId.message}</small>}
+        <div className='position-relative'>
+          <small className='ms-1 fs-6'>Select user:</small>
+          { users.length 
+          ?  
+            <select 
+              className='form-select form-control mb-4' 
+              id='select'
+              placeholder='Select a customer..'
+              {...register('userId', { required: 'You have to select a user.'} )}
+              >
+              { users && users.map(user => <option value={user.id} key={user.id}>{user.firstName} {user.lastName}</option>)}
+            </select>
+            : <select className='form-select mb-4' disabled> <option>Register a new user to create issues</option></select>
+          }
+         
+        {errors.userId && <small className='selectErrorMessage'>{errors.userId.message}</small>}
+        </div>
         <div className='form-floating position-relative py-1'>
           <input 
             type='text' 

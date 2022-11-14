@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const CommentForm = ({ issue, getIssue, setIssue }) => {
-
 
   const { id } = useParams()
   const [message, setMessage] = useState('')

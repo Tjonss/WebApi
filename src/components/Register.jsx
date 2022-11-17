@@ -10,11 +10,9 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [user, setUser] = useState({})
-
   const [registered, setRegistered] = useState(false)
 
   const navigate = useNavigate()
-
 
   const registerUser = async (formData) => {
     setLoading(true)
@@ -33,11 +31,11 @@ const Register = () => {
     setTimeout(() => {
       if(registered)
       navigate('/create')
-    }, 2000);
-  }, [registered])
+    }, 1000);
+  }, [registered, navigate])
   
-  const onSubmit = (formData) => {
-    registerUser(formData)
+  const onSubmit = async (formData) => {
+    await registerUser(formData)
     setRegistered(true)
   }
 

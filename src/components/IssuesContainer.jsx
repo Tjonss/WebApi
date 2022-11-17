@@ -12,7 +12,6 @@ const IssuesContainer = () => {
     setLoading(true)
     try {
       const res = await axios.get(`https://localhost:7179/api/issues`)
-      console.log(res.data)
       setIssues(await res.data)
       setLoading(false)
       setError(false)

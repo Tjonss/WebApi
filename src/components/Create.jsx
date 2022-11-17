@@ -1,26 +1,25 @@
 import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Create = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm()
-  // const navigate = useNavigate()
 
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
   const [error, setError] = useState(false)
   const [createIssue, setCreateIssue] = useState({})
   const [users, setUsers] = useState([])
-  
+
   const newIssue = async (formData) => {
-    setLoading(true)
     try {
-      const res = await axios.post('https://localhost:7179/api/issues', formData)
-      console.log(res.data)
-      setCreateIssue(res.data)
+        const res = await axios.post('https://localhost:7179/api/issues', formData)
+        setCreateIssue(res.data)
+
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
     }
   }
 
@@ -34,9 +33,9 @@ const Create = () => {
     }
   }
 
-  const onSubmit = (formData) => {
-      newIssue(formData)
-      // navigate('/issues')
+  const onSubmit = async (formData) => {
+      await newIssue(formData)
+      navigate('/issues')
     }
 
     useEffect(() => {
@@ -49,22 +48,25 @@ const Create = () => {
       <form onSubmit={handleSubmit(onSubmit)} className='container mt-5'>
         <div className='position-relative'>
           <small className='ms-1 fs-6'>Select user:</small>
-          { users.length 
+          { users.length
           ?  
             <select 
               className='form-select form-control mb-4' 
               id='select'
-              placeholder='Select a customer..'
-              {...register('userId', { required: 'You have to select a user.'} )}
-              >
+              {...register('userId', { required: 'You have to select a user.', onChange: e => console.log(e.target.value) } )}>
+                <option value={''} disabled>Select user</option>
               { users && users.map(user => <option value={user.id} key={user.id}>{user.firstName} {user.lastName}</option>)}
             </select>
-            : <select className='form-select mb-4' disabled> <option>Register a new user to create issues</option></select>
+          : <select 
+              className='form-select mb-4' 
+              {...register('userId', { required: 'There are no users registered.'} )}
+              disabled> 
+              <option>Register a new user to create issues</option>
+            </select>
           }
-         
         {errors.userId && <small className='selectErrorMessage'>{errors.userId.message}</small>}
         </div>
-        <div className='form-floating position-relative py-1'>
+        <div className='form-floating position-relative py-1 mt-4'>
           <input 
             type='text' 
             className='form-control' 
